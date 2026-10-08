@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+        "name": "Wii U",
+        "compilerPath": "C:/devkitPro/devkitPPC/bin/powerpc-eabi-g++.exe",
+        "includePath": [
+            "${workspaceFolder}/**",
+            "C:/devkitPro/wups/include",
+            "C:/devkitPro/wut/include",
+            "C:/devkitPro/wums/include",
+            "C:/devkitPro/portlibs/wiiu/include"
+        ],
+        "defines": [
+            "__WIIU__",
+            "__WUT__",
+            "__WUPS__"
+        ],
+        "cStandard": "c17",
+        "cppStandard": "gnu++20"
+        }
+    ],
+    "version": 4
+}
