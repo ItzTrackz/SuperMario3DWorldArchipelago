@@ -1,0 +1,17 @@
+
+{
+  "package_version": 2,
+  "api_version": 2,
+  "execution_mode": "trusted_native",
+  "mod_id": "sm3dw-archipelago",
+  "title_ids": [
+    "0005000010145c00"
+  ],
+  "requested_permissions": [
+    "homebrew_wupsbackend"
+  ],
+  "payload": {
+    "format": "wups",
+    "path": "plugin.wps"
+  }
+}

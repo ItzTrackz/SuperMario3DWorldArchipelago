@@ -104,3 +104,41 @@ $(OFILES_SRC): $(HFILES_BIN)
 -include $(DEPENDS)
 
 endif
+
+
+# ---------------------------------------------------------------------------
+# CemuExtend packaging (keeps the existing Aroma/WUPS build unchanged)
+# ---------------------------------------------------------------------------
+
+CEMOD_SDK_ROOT ?= $(CURDIR)/third_party/cemod-sdk
+CEMOD_MANIFEST := $(CURDIR)/manifest.json
+CEMOD_PACKAGE  := $(CURDIR)/out/dist/SM3DWPlugin.cemod
+CEMOD_PYTHON   ?= python
+
+.PHONY: package-cemod verify-cemod inspect-wups
+
+# Build the normal WUPS plugin, then package it for CemuExtend.
+package-cemod: all
+	@test -f "$(CURDIR)/SM3DWPlugin.wps" || \
+		(echo "Missing SM3DWPlugin.wps; the WUPS build did not produce it." >&2; exit 1)
+	@test -f "$(CEMOD_MANIFEST)" || \
+		(echo "Missing manifest.json" >&2; exit 1)
+	@test -f "$(CEMOD_SDK_ROOT)/tools/package_cemod.py" || \
+		(echo "Missing cemod-sdk; initialize the Git submodule." >&2; exit 1)
+	@mkdir -p "$(CURDIR)/out/dist"
+	$(CEMOD_PYTHON) "$(CEMOD_SDK_ROOT)/tools/package_cemod.py" \
+		--manifest "$(CEMOD_MANIFEST)" \
+		--wps "$(CURDIR)/SM3DWPlugin.wps" \
+		--output "$(CEMOD_PACKAGE)"
+	$(MAKE) verify-cemod
+
+# Validate the finished .cemod archive.
+verify-cemod:
+	$(CEMOD_PYTHON) "$(CEMOD_SDK_ROOT)/tools/verify_cemod.py" \
+		--package "$(CEMOD_PACKAGE)"
+
+# Inspect the WUPS binary and compare its metadata with the manifest.
+inspect-wups: all
+	$(CEMOD_PYTHON) "$(CEMOD_SDK_ROOT)/tools/inspect_wups.py" \
+		--wps "$(CURDIR)/SM3DWPlugin.wps" \
+		--manifest "$(CEMOD_MANIFEST)"
