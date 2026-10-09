@@ -7,9 +7,9 @@
   "title_ids": [
     "0005000010145c00"
   ],
-  "requested_permissions": [
-    "homebrew_wupsbackend"
-  ],
+  "name": "SM3DW Archipelago",
+  "version": "1.0.0",
+  "requested_permissions": [],
   "payload": {
     "format": "wups",
     "path": "plugin.wps"
