@@ -1,27 +1,73 @@
-name: Makefile CI
+
+name: Build SM3DW Archipelago
 
 on:
   push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
-
+    name: Build Aroma plugin and CemuExtend package
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - name: Check out repository and SDK submodule
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-    - name: configure
-      run: ./configure
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
 
-    - name: Install dependencies
-      run: make
+      - name: Check SDK files
+        run: |
+          test -f manifest.json
+          test -f third_party/cemod-sdk/tools/package_cemod.py
+          test -f third_party/cemod-sdk/tools/verify_cemod.py
+          test -f third_party/cemod-sdk/tools/verify_wups.py
 
-    - name: Run check
-      run: make check
+      - name: Build WUPS plugin
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/work" \
+            -w /work \
+            devkitpro/devkitppc:latest \
+            bash -lc '
+              dkp-pacman -Syu --noconfirm wiiu-dev wups
+              make clean
+              make
+            '
 
-    - name: Run distcheck
-      run: make distcheck
+      - name: Verify WUPS binary
+        run: |
+          python third_party/cemod-sdk/tools/verify_wups.py \
+            --wps SM3DWPlugin.wps
+
+      - name: Package CemuExtend mod
+        run: |
+          mkdir -p out/dist
+
+          python third_party/cemod-sdk/tools/package_cemod.py \
+            --manifest manifest.json \
+            --wps SM3DWPlugin.wps \
+            --output out/dist/SM3DWPlugin.cemod
+
+      - name: Verify CemuExtend package
+        run: |
+          python third_party/cemod-sdk/tools/verify_cemod.py \
+            --package out/dist/SM3DWPlugin.cemod
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SM3DW-Archipelago-build
+          if-no-files-found: error
+          path: |
+            SM3DWPlugin.wps
+            out/dist/SM3DWPlugin.cemod
