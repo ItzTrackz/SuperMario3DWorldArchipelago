@@ -47,7 +47,7 @@ static ItemEntry sItems[] = {
     { "CoinInfinity",          0,          0x1032b098, true },
     { "KinokoOneUp",           0,          0x1032b024, true },
     { "KinokoSuper",           0,          0x1032b0f0, true },
-    { "SuperBell",             0,          0x1032b100, true },
+    { "SuperBell",             0,          0x1032b100, false },
     { "FireFlower",            0,          0x1032b11c, true },
     { "SuperLeaf",             0,          0x1032b130, true },
     { "BoomerangFlower",       0,          0x1032b140, true },
