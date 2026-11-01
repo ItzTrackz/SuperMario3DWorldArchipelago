@@ -1,0 +1,22 @@
+{
+    WURPLSVersion: '1.0',
+    Name: 'SM3DAPWorld',
+    Type: 'CoreMod',
+    Version: '1.0.0',
+    Description: 'An Archipelago integration for Super Mario 3D World',
+    SourceDirs: [
+        'src',
+    ],
+    IncludeDirs: [
+        'include',
+    ],
+    BuildOptions: [],
+    Targets: {
+        EU: {
+            TitleID: '00050000-10145D00',
+        },
+        US: {
+            TitleID: '00050000-10145C00',
+        },
+    },
+}
