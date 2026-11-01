@@ -53,7 +53,7 @@ static ItemEntry sItems[] = {
     { "BoomerangFlower",       0,          0x1032b140, true },
     { "SuperStar",             0,          0x1032b154, true },
     { "Ball",                 0x1032afd8, 0x1032afe0, true },    // Those Baseball things
-    { nullptr,                 0x1032afe8, 0x1032b164, true },   // Bomb, name not visible from decompiler
+    { "Bomb",                 0x1032afe8, 0x1032b164, true },   // Bomb, name not visible from decompiler
     { "CoinBlow",              0,          0x1032b17c, true },
     { "GreenStar",             0,          0x1032b188, true },
     { "DoubleMario",           0,          0x1032b198, true },
