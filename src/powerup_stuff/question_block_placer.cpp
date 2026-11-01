@@ -45,29 +45,29 @@ static ItemEntry sItems[] = {
     { "Coin10",                0,          0x1032b098, true },
     { "CoinRandom10",          0,          0x1032b0c8, true },
     { "CoinInfinity",          0,          0x1032b098, true },
-    { "KinokoOneUp",           0,          0x1032b024, false },
-    { "KinokoSuper",           0,          0x1032b0f0, false },
+    { "KinokoOneUp",           0,          0x1032b024, true },
+    { "KinokoSuper",           0,          0x1032b0f0, true },
     { "SuperBell",             0,          0x1032b100, true },
-    { "FireFlower",            0,          0x1032b11c, false },
-    { "SuperLeaf",             0,          0x1032b130, false },
-    { "BoomerangFlower",       0,          0x1032b140, false },
-    { "SuperStar",             0,          0x1032b154, false },
-    { "Ball",                 0x1032afd8, 0x1032afe0, true },   // What the hell is ball
-    { nullptr,                 0x1032afe8, 0x1032b164, true },   // unknown name, literally has {, and [ as the only characters (DAT_1032afe8)
+    { "FireFlower",            0,          0x1032b11c, true },
+    { "SuperLeaf",             0,          0x1032b130, true },
+    { "BoomerangFlower",       0,          0x1032b140, true },
+    { "SuperStar",             0,          0x1032b154, true },
+    { "Ball",                 0x1032afd8, 0x1032afe0, true },    // Those Baseball things
+    { nullptr,                 0x1032afe8, 0x1032b164, true },   // Bomb, name not visible from decompiler
     { "CoinBlow",              0,          0x1032b17c, true },
-    { "GreenStar",             0,          0x1032b188, false },
+    { "GreenStar",             0,          0x1032b188, true },
     { "DoubleMario",           0,          0x1032b198, true },
-    { "KinokoBig",             0,          0x1032b1a8, false },
-    { "AssistLeaf",            0,          0x1032b1c0, false },
-    { "SuperBellSpecial",      0,          0x1032b1e0, false },
+    { "KinokoBig",             0,          0x1032b1a8, true },
+    { "AssistLeaf",            0,          0x1032b1c0, true },
+    { "SuperBellSpecial",      0,          0x1032b1e0, true },
     { "CoinConcentricCircle",  0,          0x1032b208, true },
     { "CoinBlow30",            0,          0x1032b06c, true },
 };
 
 static const unsigned int kDefaultData = 0x1032b084;  // what the original used for unknown names
-static const unsigned int kLockedData  = 0x1032b098;  // locked items give a Coin10 instead
+static const unsigned int kLockedData  = 0x1032b084;  // locked items give a Coin instead
 
-// ---------------------------------------------------------------------------
+
 // Replacement for the game's FUN_022f94c8, which is hooked at its first
 // instruction. It runs when a level object that holds an item is set up
 // (not when the player picks the item up).
@@ -104,3 +104,6 @@ void powerup_placer(unsigned int param_1, unsigned int param_2, unsigned int par
     // Hand off to the game's own spawn code, with our data.
     SpawnItem(param_1, param_2, data, param_3, param_4);
 }
+
+// Branches must be put in a global scope, not in functions
+tBranch(0x022f94c8, powerup_placer, tk::BranchType::b);
