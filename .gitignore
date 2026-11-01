@@ -1,0 +1,4 @@
+compile_commands.json
+.tachyon/
+out/
+.cache/
